@@ -2,7 +2,7 @@ import turtle
 from turtle import *
 
 
-width(4)
+width(6)
 bgcolor("black")
 def penrose_triangle():
     for i in range(1):
