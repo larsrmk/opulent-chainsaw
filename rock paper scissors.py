@@ -1,5 +1,12 @@
 import random
 
+class ColoredText:
+    GREEN = '\033[92m'
+    RED = '\033[91m'
+    YELLOW = '\033[93m'
+    WHITE = '\033[95m'
+    ENDC = '\033[0m'
+
 def player_choice():
     print("1. rock\n2. paper\n3. scissors")
     return input("Choose 1/2/3: ")
@@ -7,30 +14,39 @@ def player_choice():
 def computer_choice():
     return str(random.randint(1, 3))
 
-def result(pc, cc):
+def result(pc, cc, score):
     print(f"You selected {pc}.")
     print(f"The computer selected {cc}.")
 
-    if player_choice == computer_choice:
-        return "Draw!"
-    elif (player_choice == "1" and computer_choice == "3") or \
-        (player_choice == "2" and computer_choice == "1") or \
-        (player_choice == "3" and computer_choice == "2"):
-        return "You win!"
+    if pc == cc:
+        print(ColoredText.YELLOW + "Draw!" + ColoredText.ENDC)
+    elif (pc == "1" and cc == "3") or (pc == "2" and cc == "1") or (pc == "3" and cc == "2"):
+        print(ColoredText.GREEN + "You win!" + ColoredText.ENDC)
+        score += 1
     else:
-        return "Computer wins!"
+        print(ColoredText.RED + "Computer wins!" + ColoredText.ENDC)
+        print(f"Your final score: {score}")
+        score = 0
+
+    return score
 
 if __name__ == "__main__":
-    print("Welcome to rock, paper, scissors.")
+    print("\nWelcome to rock, paper, scissors:")
+
+    score = 0  # Initialisiere die score-Variable vor der Schleife
 
     while True:
-        pc = player_choice() 
+        pc = player_choice()
         cc = computer_choice()
 
-        game = result(pc, cc)
-        print(game)
-    
-        repeat=input("One more game (y/n)? ").lower()
+        score = result(pc, cc, score)
+
+        repeat = input("\nOne more game (y/n)? ").lower()
         if repeat != "y":
             print("See ya!")
             break
+
+
+
+
+
