@@ -13,8 +13,8 @@ bot = commands.Bot(command_prefix='py')
 
 @bot.event
 async def on_voice_state_update(user, before, after):
-    category_id = 1197671296251744386  # ID der Kategorie
-    trigger_channel_id = 1197671353227149363  #  ID des Voice Channels
+    category_id = 12345678901234567890  # ID der Kategorie
+    trigger_channel_id = 12345678901234567890  #  ID des Voice Channels
 
     if after.channel and after.channel.id == trigger_channel_id:
         category = bot.get_channel(category_id)
