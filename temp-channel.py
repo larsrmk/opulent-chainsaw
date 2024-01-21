@@ -13,7 +13,6 @@ bot = commands.Bot(command_prefix='py')
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
-    await bot.change_presence(activity=discord.Activity(name="zu!", type=discord.ActivityType.watching, status=discord.Status.online))
 
 @bot.event
 async def on_voice_state_update(user, before, after):
