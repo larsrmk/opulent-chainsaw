@@ -1,0 +1,32 @@
+import discord
+from discord.ext import commands, tasks
+import os
+from dotenv import load_dotenv
+import asyncio
+
+
+intents = discord.Intents.all()
+intents.voice_states = True
+
+
+bot = commands.Bot(command_prefix='py')
+
+
+#Konsolenausgabe, dass der Bot sich erfolgreich mit Discord verbunden hat
+@bot.event
+async def on_ready():
+    print(f'{bot.user.name} has connected to Discord!')
+
+
+@bot.event
+async def on_message(msg):
+    if msg.author.bot:
+        return
+    await msg.channel.send("Stop writing")
+    print(msg.channel) # Bot gibt in Konsole aus, in welchem Channel eine Nachricht gescheiben wurde
+
+@bot.event
+async def on_message_delete(msg):
+    await msg.channel.send(f"Eine Nachricht von {msg.author.name} wurde gelöscht")
+
+
