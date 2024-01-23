@@ -57,6 +57,3 @@ async def on_voice_state_update(user, before, after):
             await asyncio.sleep(5)
             
         await new_channel.delete()
-
-load_dotenv()
-bot.run(os.getenv("Token"))
