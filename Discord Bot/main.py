@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands, tasks
+from discord.commands import  Option
 import os
 from dotenv import load_dotenv
 import asyncio
@@ -10,6 +11,10 @@ intents.voice_states = True
 
 
 bot = commands.Bot(command_prefix='py')
+bot = discord.Bot(
+    intents=intents, 
+    debug_guildes=[358207668839776260] # für welchen Server sollen Befehle freigeschaltet werden
+)
 
 
 #Konsolenausgabe, dass der Bot sich erfolgreich mit Discord verbunden hat
@@ -31,6 +36,23 @@ async def on_message(msg):
 @bot.event
 async def on_message_delete(msg):
     await msg.channel.send(f"Eine Nachricht von {msg.author.name} wurde gelöscht.") # Schreib, wenn eine Nachricht gelöscht wurde
+
+
+@bot.slash_command(description="Verwarnung")
+async def warn(
+    ctx,
+    user: Option(discord.Member, "Der Benutzer, den du verwarnen möchtest"),
+    text: Option(str, "Bitte unterlasse dieses Verhalten!"),
+    channel: Option(discord.TextChannel, "Der Textkanal, in dem die Verwarnung gesendet werden soll")
+):
+    await channel.send(f"{user.mention} {text}")
+    await ctx.respond("Die Nachricht wurde gesendet", ephemeral=True)
+
+
+@bot.slash_command(description="fährt den bot herunter")
+async def stop(ctx):
+    await ctx.respond("Der Bot wird heruntergefahren.")
+    await bot.close()
 
 
 @bot.event
