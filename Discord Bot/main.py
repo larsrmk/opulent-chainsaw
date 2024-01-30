@@ -4,22 +4,23 @@ from discord.commands import  Option
 import os
 from dotenv import load_dotenv
 import asyncio
+import subprocess
 
 
 intents = discord.Intents.all()
 intents.voice_states = True
 
 
-bot = commands.Bot(command_prefix='py')
-bot = discord.Bot(
+bot = discord.Bot( 
     intents=intents, 
-    debug_guildes=[358207668839776260] # für welchen Server sollen Befehle freigeschaltet werden
-)
+    debug_guildes=[358207668839776260]
+    )
 
 
 #Konsolenausgabe, dass der Bot sich erfolgreich mit Discord verbunden hat
 @bot.event
 async def on_ready():
+    await bot.sync_commands()
     print(f'{bot.user.name} has connected to Discord!')
 
     # Status
@@ -52,7 +53,14 @@ async def warn(
 @bot.slash_command(description="fährt den bot herunter")
 async def stop(ctx):
     await ctx.respond("Der Bot wird heruntergefahren.")
+    print(f'{bot.user.name} has disconnected!')
     await bot.close()
+
+
+@bot.slash_command(description='Führt das Quiz aus.')
+async def wim(ctx, current_player: str):
+    subprocess.Popen(['python', r'C:\Users\larsr\iCloudDrive\Python\Wissen-ist-Macht\Grafik.py'])  # Ersetze 'Quiz.py' durch den tatsächlichen Dateinamen
+    await ctx.send('Das Quiz wurde gestartet!')
 
 
 @bot.event
@@ -79,3 +87,6 @@ async def on_voice_state_update(user, before, after):
             await asyncio.sleep(5)
             
         await new_channel.delete()
+
+load_dotenv()
+bot.run(os.getenv("Token"))
