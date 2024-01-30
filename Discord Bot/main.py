@@ -13,7 +13,7 @@ intents.voice_states = True
 
 bot = discord.Bot( 
     intents=intents, 
-    debug_guildes=[358207668839776260]
+    debug_guildes=[12345678901234567890]
     )
 
 
