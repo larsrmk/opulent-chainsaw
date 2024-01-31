@@ -1,10 +1,10 @@
 import discord
 from discord.ext import commands, tasks
 from discord.commands import  Option
+import asyncio
+
 import os
 from dotenv import load_dotenv
-import asyncio
-import subprocess
 
 
 intents = discord.Intents.all()
@@ -55,12 +55,6 @@ async def stop(ctx):
     await ctx.respond("Der Bot wird heruntergefahren.")
     print(f'{bot.user.name} has disconnected!')
     await bot.close()
-
-
-@bot.slash_command(description='Führt das Quiz aus.')
-async def wim(ctx, current_player: str):
-    subprocess.Popen(['python', r'C:\Users\larsr\iCloudDrive\Python\Wissen-ist-Macht\Grafik.py'])  # Ersetze 'Quiz.py' durch den tatsächlichen Dateinamen
-    await ctx.send('Das Quiz wurde gestartet!')
 
 
 @bot.event
