@@ -49,6 +49,11 @@ async def warn(
     await channel.send(f"{user.mention} {text}")
     await ctx.respond("Die Nachricht wurde gesendet", ephemeral=True)
 
+@bot.command()
+async def link(ctx, button_name: str, url: str):
+    view = discord.ui.View()
+    view.add_item(discord.ui.Button(label=button_name, url=url, style=discord.ButtonStyle.link))
+    await ctx.send(view=view)
 
 @bot.slash_command(description="fährt den bot herunter")
 async def stop(ctx):
