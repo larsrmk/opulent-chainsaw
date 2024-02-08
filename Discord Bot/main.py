@@ -54,8 +54,7 @@ async def stop(ctx):
     print(f'{bot.user.name} has disconnected!')
     await bot.close()
 
-# Create temp-channels
-@bot.event
+@bot.event # Create temp-channels
 async def on_voice_state_update(user, before, after):
     category_id = 1197671296251744386  # ID der Kategorie
     trigger_channel_id = 1197671353227149363  #  ID des Voice Channels
