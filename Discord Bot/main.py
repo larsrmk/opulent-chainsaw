@@ -6,26 +6,20 @@ import asyncio
 import os
 from dotenv import load_dotenv
 
-
 intents = discord.Intents.all()
 intents.voice_states = True
 
-
 bot = discord.Bot( 
     intents=intents, 
-    debug_guildes=[12345678901234567890]
+    debug_guildes=[debug_guildes]
     )
-
 
 #Konsolenausgabe, dass der Bot sich erfolgreich mit Discord verbunden hat
 @bot.event
 async def on_ready():
     await bot.sync_commands()
     print(f'{bot.user.name} has connected to Discord!')
-
-    # Status
-    await bot.change_presence(activity=discord.Activity(name="zu!", type=discord.ActivityType.watching, status=discord.Status.online))
-
+    await bot.change_presence(activity=discord.Activity(name="zu!", type=discord.ActivityType.watching, status=discord.Status.online)) # Status
 
 @bot.event
 async def on_message(msg):
@@ -37,7 +31,6 @@ async def on_message(msg):
 @bot.event
 async def on_message_delete(msg):
     await msg.channel.send(f"Eine Nachricht von {msg.author.name} wurde gelöscht.") # Schreib, wenn eine Nachricht gelöscht wurde
-
 
 @bot.slash_command(description="Verwarnung")
 async def warn(
@@ -61,7 +54,7 @@ async def stop(ctx):
     print(f'{bot.user.name} has disconnected!')
     await bot.close()
 
-
+# Create temp-channels
 @bot.event
 async def on_voice_state_update(user, before, after):
     category_id = 1197671296251744386  # ID der Kategorie
