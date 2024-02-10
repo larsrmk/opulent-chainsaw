@@ -34,7 +34,7 @@ async def on_message_delete(msg):
 
 @bot.slash_command(description="fährt den bot herunter")
 async def stop(ctx):
-    await ctx.respond("Der Bot wird heruntergefahren.")
+    await ctx.respond(f'{bot.user.name} has disconnected!' ,ephemeral=True)
     print(f'{bot.user.name} has disconnected!')
     await bot.close()
 
