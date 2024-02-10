@@ -11,7 +11,7 @@ intents.voice_states = True
 
 bot = discord.Bot( 
     intents=intents, 
-    debug_guildes=[debug_guildes]
+    debug_guildes=['debug_guildes']
     )
 
 #Konsolenausgabe, dass der Bot sich erfolgreich mit Discord verbunden hat
@@ -97,4 +97,4 @@ async def on_voice_state_update(user, before, after):
         await new_channel.delete()
 
 load_dotenv()
-bot.run(os.getenv("Token"))
+bot.run(os.getenv('Token'))
