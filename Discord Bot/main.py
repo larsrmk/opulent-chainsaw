@@ -32,6 +32,12 @@ async def on_message(msg):
 async def on_message_delete(msg):
     await msg.channel.send(f"Eine Nachricht von {msg.author.name} wurde gelöscht.") # Schreib, wenn eine Nachricht gelöscht wurde
 
+@bot.slash_command(description="fährt den bot herunter")
+async def stop(ctx):
+    await ctx.respond("Der Bot wird heruntergefahren.")
+    print(f'{bot.user.name} has disconnected!')
+    await bot.close()
+
 @bot.slash_command(description="Verwarnung")
 async def warn(
     ctx,
@@ -48,11 +54,25 @@ async def link(ctx, button_name: str, url: str):
     view.add_item(discord.ui.Button(label=button_name, url=url, style=discord.ButtonStyle.link))
     await ctx.send(view=view)
 
-@bot.slash_command(description="fährt den bot herunter")
-async def stop(ctx):
-    await ctx.respond("Der Bot wird heruntergefahren.")
-    print(f'{bot.user.name} has disconnected!')
-    await bot.close()
+@bot.slash_command()
+async def clear(ctx, amount: int):
+    role = discord.utils.get(ctx.guild.roles, id=1205972715425628210) # User muss diese Rolle haben (höhergestellte Rollen und Admin können Command nicht ausführen)
+    if role and role in ctx.author.roles:
+        await ctx.channel.purge(limit=amount)
+        await ctx.respond(f'{amount} Nachrichten wurden gelöscht', ephemeral=True)
+    else:
+        await ctx.respond("Du hast nicht die erforderliche Rolle, um diesen Befehl auszuführen.", ephemeral=True)
+
+# Alle User die eine bestimmte Rolle haben und alle User die eine höhergestellte Rolle haben, können diesen Command ausführen
+# @bot.slash_command()
+# async def clear1(ctx, amount: int):
+#     role = discord.utils.get(ctx.guild.roles, id=1205972715425628210)
+#     user_roles = ctx.author.roles
+#     if any(role >= r for r in user_roles):
+#         await ctx.channel.purge(limit=amount)
+#         await ctx.respond(f'{amount} Nachrichten wurden gelöscht', ephemeral=True)
+#     else:
+#         await ctx.respond("Du hast nicht die erforderliche Rolle oder eine höhere Rolle, um diesen Befehl auszuführen.", ephemeral=True)
 
 @bot.event # Create temp-channels
 async def on_voice_state_update(user, before, after):
@@ -75,26 +95,6 @@ async def on_voice_state_update(user, before, after):
             await asyncio.sleep(5)
             
         await new_channel.delete()
-
-@bot.slash_command()
-async def clear(ctx, amount: int):
-    role = discord.utils.get(ctx.guild.roles, id=1205972715425628210) # User muss diese Rolle haben (höhergestellte Rollen und Admin können Command nicht ausführen)
-    if role and role in ctx.author.roles:
-        await ctx.channel.purge(limit=amount)
-        await ctx.respond(f'{amount} Nachrichten wurden gelöscht', ephemeral=True)
-    else:
-        await ctx.respond("Du hast nicht die erforderliche Rolle, um diesen Befehl auszuführen.", ephemeral=True)
-
-# Alle User die eine bestimmte Rolle haben und alle User die eine höhergestellte Rolle haben, können diesen Command ausführen
-# @bot.slash_command()
-# async def clear1(ctx, amount: int):
-#     role = discord.utils.get(ctx.guild.roles, id=1205972715425628210)
-#     user_roles = ctx.author.roles
-#     if any(role >= r for r in user_roles):
-#         await ctx.channel.purge(limit=amount)
-#         await ctx.respond(f'{amount} Nachrichten wurden gelöscht', ephemeral=True)
-#     else:
-#         await ctx.respond("Du hast nicht die erforderliche Rolle oder eine höhere Rolle, um diesen Befehl auszuführen.", ephemeral=True)
 
 load_dotenv()
 bot.run(os.getenv("Token"))
