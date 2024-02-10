@@ -69,15 +69,32 @@ async def on_voice_state_update(user, before, after):
         # moved den user in den temporären Kanal
         new_channel = await category.create_voice_channel(channel_name)
         await user.move_to(new_channel)
-
-        # plant, das der Channel nach 5 Sekunden gelöscht wird, wenn kein user mehr im Channel ist
-        await asyncio.sleep(5) # braucht man nicht unbedingt
         
         # überprüfen ob der Channel noch existiert und ob sich noch jemand im Channel befindet
         while new_channel.members:
             await asyncio.sleep(5)
             
         await new_channel.delete()
+
+@bot.slash_command()
+async def clear(ctx, amount: int):
+    role = discord.utils.get(ctx.guild.roles, id=1205972715425628210) # User muss diese Rolle haben (höhergestellte Rollen und Admin können Command nicht ausführen)
+    if role and role in ctx.author.roles:
+        await ctx.channel.purge(limit=amount)
+        await ctx.respond(f'{amount} Nachrichten wurden gelöscht', ephemeral=True)
+    else:
+        await ctx.respond("Du hast nicht die erforderliche Rolle, um diesen Befehl auszuführen.", ephemeral=True)
+
+# Alle User die eine bestimmte Rolle haben und alle User die eine höhergestellte Rolle haben, können diesen Command ausführen
+# @bot.slash_command()
+# async def clear1(ctx, amount: int):
+#     role = discord.utils.get(ctx.guild.roles, id=1205972715425628210)
+#     user_roles = ctx.author.roles
+#     if any(role >= r for r in user_roles):
+#         await ctx.channel.purge(limit=amount)
+#         await ctx.respond(f'{amount} Nachrichten wurden gelöscht', ephemeral=True)
+#     else:
+#         await ctx.respond("Du hast nicht die erforderliche Rolle oder eine höhere Rolle, um diesen Befehl auszuführen.", ephemeral=True)
 
 load_dotenv()
 bot.run(os.getenv("Token"))
